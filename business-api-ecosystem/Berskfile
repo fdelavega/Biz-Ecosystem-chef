@@ -1,0 +1,6 @@
+source "https://supermarket.chef.io"
+Encoding.default_external = Encoding::UTF_8
+metadata
+
+cookbook 'glassfish', '~> 0.7.6'
+cookbook 'git', '~> 5.0.1'
