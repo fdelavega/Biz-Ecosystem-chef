@@ -31,13 +31,18 @@ rss_data = Hash[
   :root => node[:biz][:rss][:root]
 ]
 
-wars = [rss_data]
+catalog_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTCATALOG2/releases/download/v5.4.0/DSProductCatalog.war',
+  :name =>  'DSProductCatalog.war',
+  :database => node[:biz][:catalog][:database],
+  :root => node[:biz][:catalog][:root]
+]
+
+wars = [rss_data, catalog_data]
 
 # Include java
 include_recipe "java"
 
-# Include Glassfish
-include_recipe "glassfish::attribute_driven_domain"
 
 # Create TMF API connection pools
 
@@ -101,6 +106,27 @@ for war in wars do
     command 'mysql -S /var/run/mysql-default/mysqld.sock -u root -proot -e "CREATE DATABASE IF NOT EXISTS ' + war[:database] + ';"'
   end
 end
+
+# Include Glassfish
+include_recipe "glassfish::attribute_driven_domain"
+
+#pool_prop = Hash[
+ # :Instance => 'jdbc:mysql://localhost:3306/' + node[:biz][:catalog][:database], 
+ # :User => 'root', 
+ # :Password => 'root', 
+ # :Database => node[:biz][:catalog][:database]
+#]
+
+#glassfish_jdbc_connection_pool 'catalog' do
+#  driverclassname 'com.mysql.jdbc.Driver'
+#  restype 'java.sql.Driver'
+#  validationmethod 'auto-commit'
+#  properties pool_prop 
+#  domain_name 'domain1'
+#  username node[:glassfish][:domains][:domain1][:config][:username]
+#  password_file '/srv/glassfish/domain1_admin_passwd'
+#end
+
 
 # Deploy war files
 for war in wars do
