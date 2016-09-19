@@ -24,17 +24,20 @@ require 'rubygems'
 #  'branch' => node[:rss][:branch]
 #}]
 
-wars = [{
-  'url' => 'https://github.com/FIWARE-TMForum/business-ecosystem-rss/releases/download/v5.4.0/DSRevenueSharing.war',
-  'name'=>  'DSRevenueSharing.war',
-  'database' => node[:rss][:database],
-  'root' => node[:root]
-}]
-# Include Glassfish
-include_recipe "glassfish::default"
+rss_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/business-ecosystem-rss/releases/download/v5.4.0/DSRevenueSharing.war',
+  :name =>  'DSRevenueSharing.war',
+  :database => node[:biz][:rss][:database],
+  :root => node[:biz][:rss][:root]
+]
 
-# Create glassfish domain
-glassfish_domain "biz-domain"
+wars = [rss_data]
+
+# Include java
+include_recipe "java"
+
+# Include Glassfish
+include_recipe "glassfish::attribute_driven_domain"
 
 # Create TMF API connection pools
 
@@ -53,17 +56,17 @@ end
 #end
 
 # Download APIs war files
-directory '/opt/biz-ecosystem/wars' do
-  recursive true
-end
+# directory '/opt/biz-ecosystem/wars' do
+#  recursive true
+#end
 
-for war in wars do
-  remote_file '/opt/biz-ecosystem/wars/' + war[:name] do
-    source war[:url]
-    mode: '0755'
-    action: :create
-  end
-end
+#for war in wars do
+#  remote_file '/opt/biz-ecosystem/wars/' + war[:name] do
+#    source war[:url]
+#    mode '0755'
+#    action :create
+#  end
+#end
 
 # Create properties files for the RSS
 directory '/etc/default/rss' do
@@ -71,21 +74,24 @@ directory '/etc/default/rss' do
 end
 
 template '/etc/default/rss/database.properties' do
-  source 'database.properties'
+  source 'database.properties.erb'
   mode '0755'
 end
 
 template '/etc/default/rss/oauth.properties' do
-  source 'oauth.properties'
+  source 'oauth.properties.erb'
   mode '0755'
 end
 
+include_recipe 'apt'
+
 # Create databases
-include_recipe 'mysql'
+#include_recipe 'mysql'
 
 mysql_service 'default' do
+  # notifies :run, 'execute[apt-get update]', :immediately
   port '3306'
-  version '5.5'
+  version '5.6'
   initial_root_password 'root'
   action [:create, :start]
 end
@@ -98,9 +104,13 @@ end
 
 # Deploy war files
 for war in wars do
-  glassfish_deployable '/opt/biz-ecosystem/wars/' + war[:name] do
+  glassfish_deployable war[:name] do
+    url war[:url]
     action :deploy
     context_root war[:root]
+    domain_name 'domain1'
+    username node[:glassfish][:domains][:domain1][:config][:username]
+    password_file '/srv/glassfish/domain1_admin_passwd'
   end
 end
 
