@@ -3,4 +3,5 @@ Encoding.default_external = Encoding::UTF_8
 metadata
 
 cookbook 'glassfish', '~> 0.7.6'
-cookbook 'git', '~> 5.0.1'
+cookbook 'maven', '~> 4.0.0'
+cookbook 'mysql', '~> 8.0.3'
