@@ -29,6 +29,42 @@ git "/opt/biz-ecosystem" do
   action :sync
 end
 
+# Install system dependencies
+pkgs = value_for_platform_family(
+   "debian" => ["xvfb", "libssl-dev", "libffi-dev", "python-dev"],
+   "rhel" => ["xorg-x11-server-Xvfb", "libffi-devel",  "python-devel",  "openssl-devel", "gcc"],
+   "fedora" => ["xorg-x11-server-Xvfb", "libffi-devel",  "python-devel",  "openssl-devel", "gcc"],
+   "default" => ["xvfb", "libssl-dev", "libffi-dev", "python-dev"]
+)
+
+for pkg in pkgs do
+  package pkg do
+    action :install
+  end
+end
+
+case node[:platform_family]
+when "debian"
+  package "wkhtmltopdf" do
+    action :install
+  end
+
+when "rhel", "fedora"
+  wk_file = "/tmp/wkhtmltox-0.12.1_linux-centos7-amd64.rpm"
+
+  remote_file wk_file do
+    source "http://download.gna.org/wkhtmltopdf/0.12/0.12.1/wkhtmltox-0.12.1_linux-centos7-amd64.rpm"
+  end
+
+  rpm_package wk_file do
+    source wk_file
+    action :install
+  end
+
+else
+  Chef::Log.warn("No support for wkhtmltopdf in your system")
+end
+
 # Create a virtualenv
 python_virtualenv "/opt/biz-ecosystem/business-ecosystem-charging-backend/virtenv"
 
