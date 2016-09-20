@@ -26,52 +26,36 @@ require 'rubygems'
 
 rss_data = Hash[
   :url => 'https://github.com/FIWARE-TMForum/business-ecosystem-rss/releases/download/v5.4.0/DSRevenueSharing.war',
-  :name =>  'DSRevenueSharing.war',
   :database => node[:biz][:rss][:database],
   :root => node[:biz][:rss][:root]
 ]
 
 catalog_data = Hash[
   :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTCATALOG2/releases/download/v5.4.0/DSProductCatalog.war',
-  :name =>  'DSProductCatalog.war',
   :database => node[:biz][:catalog][:database],
   :root => node[:biz][:catalog][:root]
 ]
 
-wars = [rss_data, catalog_data]
+ordering_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTORDERING/releases/download/v5.4.0/DSProductOrdering.war',
+  :database => node[:biz][:ordering][:database],
+  :root => node[:biz][:ordering][:root]
+]
+
+inventory_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTINVENTORY/releases/download/v5.4.0/DSProductInventory.war',
+  :database => node[:biz][:inventory][:database],
+  :root => node[:biz][:inventory][:root]
+]
+
+wars = [rss_data, catalog_data, ordering_data, inventory_data]
 
 # Include java
 include_recipe "java"
 
-
-# Create TMF API connection pools
-
-# Create TMF API connection resources
-
 package 'git' do
   action :install
 end
-
-#for repo in git_repos do
-#  git '/opt/biz-ecosystem' do
-#    repository repo[:repository]
-#    reference repo[:branch]
-#    action :sync
-#  end
-#end
-
-# Download APIs war files
-# directory '/opt/biz-ecosystem/wars' do
-#  recursive true
-#end
-
-#for war in wars do
-#  remote_file '/opt/biz-ecosystem/wars/' + war[:name] do
-#    source war[:url]
-#    mode '0755'
-#    action :create
-#  end
-#end
 
 # Create properties files for the RSS
 directory '/etc/default/rss' do
@@ -110,27 +94,16 @@ end
 # Include Glassfish
 include_recipe "glassfish::attribute_driven_domain"
 
-#pool_prop = Hash[
- # :Instance => 'jdbc:mysql://localhost:3306/' + node[:biz][:catalog][:database], 
- # :User => 'root', 
- # :Password => 'root', 
- # :Database => node[:biz][:catalog][:database]
-#]
-
-#glassfish_jdbc_connection_pool 'catalog' do
-#  driverclassname 'com.mysql.jdbc.Driver'
-#  restype 'java.sql.Driver'
-#  validationmethod 'auto-commit'
-#  properties pool_prop 
-#  domain_name 'domain1'
-#  username node[:glassfish][:domains][:domain1][:config][:username]
-#  password_file '/srv/glassfish/domain1_admin_passwd'
-#end
-
+glassfish_secure_admin "Remote access" do
+  action :enable 
+  domain_name 'domain1'
+  username node[:glassfish][:domains][:domain1][:config][:username]
+  password_file '/srv/glassfish/domain1_admin_passwd'
+end
 
 # Deploy war files
 for war in wars do
-  glassfish_deployable war[:name] do
+  glassfish_deployable war[:root] do
     url war[:url]
     action :deploy
     context_root war[:root]
