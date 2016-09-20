@@ -19,60 +19,6 @@
 
 require 'rubygems'
 
-#git_repos = [{
-#  'repository' => 'https://github.com/FIWARE-TMForum/business-ecosystem-rss.git'
-#  'branch' => node[:rss][:branch]
-#}]
-
-rss_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/business-ecosystem-rss/releases/download/v5.4.0/DSRevenueSharing.war',
-  :database => node[:biz][:rss][:database],
-  :root => node[:biz][:rss][:root]
-]
-
-catalog_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTCATALOG2/releases/download/v5.4.0/DSProductCatalog.war',
-  :database => node[:biz][:catalog][:database],
-  :root => node[:biz][:catalog][:root]
-]
-
-ordering_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTORDERING/releases/download/v5.4.0/DSProductOrdering.war',
-  :database => node[:biz][:ordering][:database],
-  :root => node[:biz][:ordering][:root]
-]
-
-inventory_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTINVENTORY/releases/download/v5.4.0/DSProductInventory.war',
-  :database => node[:biz][:inventory][:database],
-  :root => node[:biz][:inventory][:root]
-]
-
-party_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPARTYMANAGEMENT/releases/download/v5.4.0/DSPartyManagement.war',
-  :database => node[:biz][:party][:database],
-  :root => node[:biz][:party][:root]
-]
-
-customer_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSCUSTOMER/releases/download/v5.4.0/DSCustomerManagement.war',
-  :database => node[:biz][:customer][:database],
-  :root => node[:biz][:customer][:root]
-]
-
-billing_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSBILLINGMANAGEMENT/releases/download/v5.4.0/DSBillingManagement.war',
-  :database => node[:biz][:billing][:database],
-  :root => node[:biz][:billing][:root]
-]
-
-usage_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSUSAGEMANAGEMENT/releases/download/v5.4.0/DSUsageManagement.war',
-  :database => node[:biz][:usage][:database],
-  :root => node[:biz][:usage][:root]
-]
-wars = [rss_data, catalog_data, ordering_data, inventory_data, party_data, customer_data, billing_data, usage_data]
-
 # Include java
 include_recipe "java"
 
@@ -80,65 +26,10 @@ package 'git' do
   action :install
 end
 
-# Create properties files for the RSS
-directory '/etc/default/rss' do
+directory "/opt/biz-ecosystem"
   recursive true
 end
 
-template '/etc/default/rss/database.properties' do
-  source 'database.properties.erb'
-  mode '0755'
-end
-
-template '/etc/default/rss/oauth.properties' do
-  source 'oauth.properties.erb'
-  mode '0755'
-end
-
-include_recipe 'apt'
-
-# Create databases
-#include_recipe 'mysql'
-
-mysql_service 'default' do
-  package_version '5.6.33-0ubuntu0.14.04.1'
-  notifies :run, 'execute[apt-get update]', :immediately
-  port '3306'
-  version '5.6'
-  initial_root_password 'root'
-  action [:create, :start]
-end
-
-for war in wars do
-  execute 'create-databases' do
-    command 'mysql -S /var/run/mysql-default/mysqld.sock -u root -proot -e "CREATE DATABASE IF NOT EXISTS ' + war[:database] + ';"'
-  end
-end
-
-cookbook_file "/tmp/mysql-connector-java-5.1.39-bin.jar" do
-  source "mysql-connector-java-5.1.39-bin.jar"
-  mode "0755"
-end
-
-# Include Glassfish
-include_recipe "glassfish::attribute_driven_domain"
-
-glassfish_secure_admin "Remote access" do
-  action :enable 
-  domain_name 'domain1'
-  username node[:glassfish][:domains][:domain1][:config][:username]
-  password_file '/srv/glassfish/domain1_admin_passwd'
-end
-
-# Deploy war files
-for war in wars do
-  glassfish_deployable war[:root] do
-    url war[:url]
-    action :deploy
-    context_root war[:root]
-    domain_name 'domain1'
-    username node[:glassfish][:domains][:domain1][:config][:username]
-    password_file '/srv/glassfish/domain1_admin_passwd'
-  end
-end
+include_recipe "business-api-ecosystem::install_apis"
+include_recipe "business-api-ecosystem::install_charging"
 
