@@ -48,7 +48,30 @@ inventory_data = Hash[
   :root => node[:biz][:inventory][:root]
 ]
 
-wars = [rss_data, catalog_data, ordering_data, inventory_data]
+party_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/DSPARTYMANAGEMENT/releases/download/v5.4.0/DSPartyManagement.war',
+  :database => node[:biz][:party][:database],
+  :root => node[:biz][:party][:root]
+]
+
+customer_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/DSCUSTOMER/releases/download/v5.4.0/DSCustomerManagement.war',
+  :database => node[:biz][:customer][:database],
+  :root => node[:biz][:customer][:root]
+]
+
+billing_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/DSBILLINGMANAGEMENT/releases/download/v5.4.0/DSBillingManagement.war',
+  :database => node[:biz][:billing][:database],
+  :root => node[:biz][:billing][:root]
+]
+
+usage_data = Hash[
+  :url => 'https://github.com/FIWARE-TMForum/DSUSAGEMANAGEMENT/releases/download/v5.4.0/DSUsageManagement.war',
+  :database => node[:biz][:usage][:database],
+  :root => node[:biz][:usage][:root]
+]
+wars = [rss_data, catalog_data, ordering_data, inventory_data, party_data, customer_data, billing_data, usage_data]
 
 # Include java
 include_recipe "java"
@@ -89,6 +112,11 @@ for war in wars do
   execute 'create-databases' do
     command 'mysql -S /var/run/mysql-default/mysqld.sock -u root -proot -e "CREATE DATABASE IF NOT EXISTS ' + war[:database] + ';"'
   end
+end
+
+cookbook_file "/tmp/mysql-connector-java-5.1.39-bin.jar" do
+  source "mysql-connector-java-5.1.39-bin.jar"
+  mode "0755"
 end
 
 # Include Glassfish

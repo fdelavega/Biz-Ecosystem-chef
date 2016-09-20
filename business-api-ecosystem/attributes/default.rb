@@ -14,6 +14,18 @@ default[:biz][:ordering][:root] = 'DSProductOrdering'
 default[:biz][:inventory][:database] = 'Inventory'
 default[:biz][:inventory][:root] = 'DSProductInventory'
 
+default[:biz][:party][:database] = 'Party'
+default[:biz][:party][:root] = 'DSPartyManagement'
+
+default[:biz][:customer][:database] = 'Customer'
+default[:biz][:customer][:root] = 'DSCustomerManagement'
+
+default[:biz][:billing][:database] = 'Billing'
+default[:biz][:billing][:root] = 'DSBillingManagement'
+
+default[:biz][:usage][:database] = 'UsageM'
+default[:biz][:usage][:root] = 'DSUsageManagement'
+
 # Java 8
 default[:java][:install_flavor] = 'oracle'
 default[:java][:jdk_version] = '8'
@@ -27,10 +39,10 @@ default[:glassfish][:domains][:domain1][:config][:password] = 'adminpwd'
 default[:glassfish][:domains][:domain1][:config][:master_password] = 'masterpwd'
 
 default[:glassfish][:domains][:domain1][:extra_libraries][:jdbcdriver][:type] = 'common'
-default[:glassfish][:domains][:domain1][:extra_libraries][:jdbcdriver][:url] = 'http://antares.ls.fi.upm.es:8888/mysql-connector-java-5.1.39-bin.jar'
+default[:glassfish][:domains][:domain1][:extra_libraries][:jdbcdriver][:url] = 'file:///tmp/mysql-connector-java-5.1.39-bin.jar'
 default[:glassfish][:domains][:domain1][:extra_libraries][:jdbcdriver][:requires_restart] = true
 
-tmf_apis = ['catalog', 'ordering', 'inventory']
+tmf_apis = ['catalog', 'ordering', 'inventory', 'party', 'customer', 'billing', 'usage']
 
 for api in tmf_apis do
   default[:glassfish][:domains][:domain1][:jdbc_connection_pools][api][:config][:driverclassname] = 'com.mysql.jdbc.Driver'
