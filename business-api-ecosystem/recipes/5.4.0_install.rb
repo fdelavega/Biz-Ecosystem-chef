@@ -26,7 +26,7 @@ package 'git' do
   action :install
 end
 
-directory "/opt/biz-ecosystem"
+directory "/opt/biz-ecosystem" do
   recursive true
 end
 

@@ -8,8 +8,8 @@ version          "5.4.0"
 depends          "glassfish"
 depends          "apt"
 depends          "mysql", "~> 8.0"
-depends          "java"
 depends          "poise-python"
+depends          "java"
 
 %w{ debian ubuntu centos redhat fedora }.each do |os|
     supports os

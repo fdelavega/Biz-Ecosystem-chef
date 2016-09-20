@@ -63,7 +63,8 @@ python_dep = [{
 }]
 
 for dep in python_dep do
-  python_package dep[:name] do
-    version dep[:version]
+  python_package dep['name'] do
+    version dep['version']
+    virtualenv "/opt/biz-ecosystem/business-ecosystem-charging-backend/virtenv"
   end
 end
