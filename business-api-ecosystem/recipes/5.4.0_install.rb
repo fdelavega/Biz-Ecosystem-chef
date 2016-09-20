@@ -26,10 +26,17 @@ package 'git' do
   action :install
 end
 
+include_recipe "business-api-ecosystem::install_apis"
+
 directory "/opt/biz-ecosystem" do
   recursive true
 end
 
-include_recipe "business-api-ecosystem::install_apis"
+include_recipe "mongodb::default"
+
+mongodb_instance "mongodb" do
+  smallfiles true
+end
+
 include_recipe "business-api-ecosystem::install_charging"
 

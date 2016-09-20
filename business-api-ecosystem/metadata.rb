@@ -10,6 +10,7 @@ depends          "apt"
 depends          "mysql", "~> 8.0"
 depends          "poise-python"
 depends          "java"
+depends          "mongodb"
 
 %w{ debian ubuntu centos redhat fedora }.each do |os|
     supports os
