@@ -23,7 +23,7 @@ include_recipe "build-essential"
 include_recipe "poise-python"
 
 # Clone business ecosystem charging repo
-git "/opt/biz-ecosystem" do
+git "/opt/biz-ecosystem/business-ecosystem-charging-backend" do
   repository "https://github.com/FIWARE-TMForum/business-ecosystem-charging-backend.git"
   reference "v5.4.0"
   action :sync
@@ -102,5 +102,38 @@ for dep in python_dep do
   python_package dep['name'] do
     version dep['version']
     virtualenv "/opt/biz-ecosystem/business-ecosystem-charging-backend/virtenv"
+  end
+end
+
+# Install python dependencies comming from github
+python_git_dep = [{
+  'name' => 'django',
+  'url' => 'https://github.com/django-nonrel/django.git',
+  'branch' => 'nonrel-1.6'
+}, {
+  'name' => 'djangotoolbox',
+  'url' => 'https://github.com/django-nonrel/djangotoolbox.git',
+  'branch' => 'master'
+}, {
+  'name' => 'mongodbengine',
+  'url' => 'https://github.com/django-nonrel/mongodb-engine.git',
+  'branch' => 'master'
+}]
+
+python_git_dep = []
+
+for dep in python_git_dep do
+
+  python_execute 'install ' + dep['name'] do
+    action :nothing
+    command '-m pip install'
+    cwd '/opt/biz-ecosystem/' + dep['name']
+    virtualenv "/opt/biz-ecosystem/business-ecosystem-charging-backend/virtenv"
+  end
+
+  git '/opt/biz-ecosystem/' + dep['name'] do
+    repository dep['url']
+    reference dep['branch']
+    notifies :run, 'python_execute[install ' + dep['name'] + ']', :immediately
   end
 end
