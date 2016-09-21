@@ -65,9 +65,6 @@ else
   Chef::Log.warn("No support for wkhtmltopdf in your system")
 end
 
-# Create a virtualenv
-python_virtualenv "/opt/biz-ecosystem/business-ecosystem-charging-backend/virtenv"
-
 # Install python dependencies
 python_dep = [{
   'name' => 'pymongo',
@@ -101,7 +98,6 @@ python_dep = [{
 for dep in python_dep do
   python_package dep['name'] do
     version dep['version']
-    virtualenv "/opt/biz-ecosystem/business-ecosystem-charging-backend/virtenv"
   end
 end
 
@@ -126,7 +122,6 @@ for dep in python_git_dep do
     action :nothing
     command '-m pip install'
     cwd '/opt/biz-ecosystem/' + dep['name']
-    virtualenv "/opt/biz-ecosystem/business-ecosystem-charging-backend/virtenv"
   end
 
   git '/opt/biz-ecosystem/' + dep['name'] do
@@ -148,5 +143,10 @@ end
 
 template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/wstore/charging_engine/payment_client/paypal_client.py' do
   source 'paypal_client.py.erb'
+  mode '0755'
+end
+
+template '/etc/init.d/business-charging' do
+  source 'business-charging.erb'
   mode '0755'
 end

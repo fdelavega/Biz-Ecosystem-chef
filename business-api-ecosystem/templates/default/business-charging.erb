@@ -1,0 +1,36 @@
+#! /bin/sh
+ 
+#to prevent some possible problems
+
+start() {
+  WORKSPACE=`pwd`
+  echo "Starting the Business Ecosystem Charging Backend"
+  cd /opt/biz-ecosystem/business-ecosystem-charging-backend/
+  
+  cd src
+  nohup ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
+  cd $WORKSPACE
+}
+
+stop() {
+  for var in $(netstat -ntlp | grep <%= node[:biz][:charging][:port] %>); do pid=$var; done
+  kill -9 $(echo $pid | cut -f1 -d/)  
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  stop)
+    stop
+    ;;
+  *)
+    echo $"usage: $0 {start|stop|restart}"
+    exit 3
+    ;;
+esac
+:
