@@ -120,8 +120,6 @@ python_git_dep = [{
   'branch' => 'master'
 }]
 
-python_git_dep = []
-
 for dep in python_git_dep do
 
   python_execute 'install ' + dep['name'] do
@@ -140,6 +138,11 @@ end
 
 template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/settings.py' do
   source 'settings.py.erb'
+  mode '0755'
+end
+
+template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/services_settings.py' do
+  source 'services_settings.py.erb'
   mode '0755'
 end
 
