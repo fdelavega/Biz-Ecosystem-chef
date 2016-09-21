@@ -5,10 +5,9 @@
 start() {
   WORKSPACE=`pwd`
   echo "Starting the Business Ecosystem Charging Backend"
-  cd /opt/biz-ecosystem/business-ecosystem-charging-backend/
-  
-  cd src
-  nohup ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
+
+  cd /opt/biz-ecosystem/business-ecosystem-charging-backend/src  
+  nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
   cd $WORKSPACE
 }
 

@@ -31,7 +31,6 @@ if (context == null) {
     });
 } else {
     db.wstore_context.update({"_id": context["_id"]}, {
-        "$set": {"local_site_id": local["_id"]},
-        "$set": {"site_id": ext["_id"]}
+        "$set": {"local_site_id": local["_id"], "site_id": ext["_id"]},
     });
 }

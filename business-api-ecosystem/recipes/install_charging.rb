@@ -65,6 +65,10 @@ else
   Chef::Log.warn("No support for wkhtmltopdf in your system")
 end
 
+python_virtualenv '/opt/biz-ecosystem/virtenv' do
+  action :create
+end
+
 # Install python dependencies
 python_dep = [{
   'name' => 'pymongo',
@@ -98,6 +102,7 @@ python_dep = [{
 for dep in python_dep do
   python_package dep['name'] do
     version dep['version']
+    virtualenv '/opt/biz-ecosystem/virtenv'
   end
 end
 
@@ -120,8 +125,9 @@ for dep in python_git_dep do
 
   python_execute 'install ' + dep['name'] do
     action :nothing
-    command '-m pip install'
+    command '-m pip install .'
     cwd '/opt/biz-ecosystem/' + dep['name']
+    virtualenv '/opt/biz-ecosystem/virtenv'
   end
 
   git '/opt/biz-ecosystem/' + dep['name'] do
