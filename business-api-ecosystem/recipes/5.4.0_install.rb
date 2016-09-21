@@ -40,3 +40,16 @@ end
 
 include_recipe "business-api-ecosystem::install_charging"
 
+# Run the charging backend
+service 'business-charging' do
+  supports :restart => true, :start => true, :stop =>true
+  action [:enable, :start]
+end
+
+# execute 'sleeep' do
+#  command 'exec 9<>/dev/tcp/127.0.0.1/4848 >> /tmp/hola.txt 2>&1; exec 9>&-; exec 9<&-; exec 9>&'
+# end
+
+# execute 'start-charging' do
+#  command 'service business-charging restart >> /tmp/hola.txt 2>&1'
+# end

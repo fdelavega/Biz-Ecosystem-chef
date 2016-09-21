@@ -168,8 +168,4 @@ execute 'create sites' do
   command 'mongo /opt/biz-ecosystem/createsites.js'
 end
 
-# Run the charging backend
-service 'business-charging' do
-  action :restart
-end
 
