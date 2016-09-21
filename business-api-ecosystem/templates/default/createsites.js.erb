@@ -1,0 +1,37 @@
+
+var conn = new Mongo();
+db = conn.getDB("wstore_db");
+
+// Remove existing sites
+db.django_site.drop()
+
+db.django_site.insert([{
+  "name": "ext",
+  "domain": "http://<%= node[:biz][:host] %>:<%= node[:biz][:port] %>/"
+}, {
+  "name": "local",
+  "domain": "http://localhost:<%= node[:biz][:charging][:port] %>/"
+}]);
+
+// Search for an existing context
+var ext = db.django_site.findOne({"name": "ext"});
+var local = db.django_site.findOne({"name": "local"});
+
+var context = db.wstore_context.findOne()
+
+if (context == null) {
+    db.wstore_context.insert({
+        "user_refs" : {},
+	"newest" : [],
+	"failed_cdrs" : [],
+	"local_site_id" : local["_id"],
+	"site_id" : ext["_id"],
+	"top_rated" : [],
+	"payouts_n" : 0
+    });
+} else {
+    db.wstore_context.update({"_id": context["_id"]}, {
+        "$set": {"local_site_id": local["_id"]},
+        "$set": {"site_id": ext["_id"]}
+    });
+}

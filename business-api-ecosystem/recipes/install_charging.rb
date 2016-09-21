@@ -131,6 +131,7 @@ for dep in python_git_dep do
   end
 end
 
+# Deploy templates
 template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/settings.py' do
   source 'settings.py.erb'
   mode '0755'
@@ -150,3 +151,19 @@ template '/etc/init.d/business-charging' do
   source 'business-charging.erb'
   mode '0755'
 end
+
+# Create sites
+template '/opt/biz-ecosystem/createsites.js' do
+  source 'createsites.js.erb'
+  mode '0755'
+end
+
+execute 'create sites' do
+  command 'mongo /opt/biz-ecosystem/createsites.js'
+end
+
+# Run the charging backend
+service 'business-charging' do
+  action :restart
+end
+
