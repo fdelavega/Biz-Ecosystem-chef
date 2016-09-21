@@ -143,3 +143,7 @@ template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/settings.py
   mode '0755'
 end
 
+template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/wstore/charging_engine/payment_client/paypal_client.py' do
+  source 'paypal_client.py.erb'
+  mode '0755'
+end

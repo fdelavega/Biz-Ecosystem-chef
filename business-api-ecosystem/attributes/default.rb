@@ -34,6 +34,10 @@ default[:biz][:charging][:email][:passwd] = 'email_passwd'
 default[:biz][:charging][:email][:server] = 'email_server'
 default[:biz][:charging][:email][:port] = 557
 
+default[:biz][:charging][:paypal][:id] = 'paypal_id'
+default[:biz][:charging][:paypal][:secret] = 'paypal_secret'
+default[:biz][:charging][:paypal][:mode] = 'sandbox'
+
 # Java 8
 default[:java][:install_flavor] = 'oracle'
 default[:java][:jdk_version] = '8'
