@@ -137,3 +137,9 @@ for dep in python_git_dep do
     notifies :run, 'python_execute[install ' + dep['name'] + ']', :immediately
   end
 end
+
+template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/settings.py' do
+  source 'settings.py.erb'
+  mode '0755'
+end
+

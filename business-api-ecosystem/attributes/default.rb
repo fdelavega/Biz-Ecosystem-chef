@@ -1,6 +1,7 @@
 
 # Business Ecosystem
-default[:biz][:apis][:port] = '8080'
+default[:biz][:host] = 'localhost'
+default[:biz][:port] = 8000
 
 default[:biz][:rss][:database] = 'RSS'
 default[:biz][:rss][:root] = 'DSRevenueSharing'
@@ -25,6 +26,13 @@ default[:biz][:billing][:root] = 'DSBillingManagement'
 
 default[:biz][:usage][:database] = 'UsageM'
 default[:biz][:usage][:root] = 'DSUsageManagement'
+
+default[:biz][:charging][:port] = 8006
+default[:biz][:charging][:email][:user] = 'email_user'
+default[:biz][:charging][:email][:email] = 'biz@email.com'
+default[:biz][:charging][:email][:passwd] = 'email_passwd'
+default[:biz][:charging][:email][:server] = 'email_server'
+default[:biz][:charging][:email][:port] = 557
 
 # Java 8
 default[:java][:install_flavor] = 'oracle'
