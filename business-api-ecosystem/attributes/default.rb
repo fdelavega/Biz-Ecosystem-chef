@@ -28,8 +28,11 @@ end
 # Business Ecosystem
 default[:biz][:host] = conf_data['host']
 default[:biz][:port] = conf_data['port']
+
 default[:biz][:client_id] = conf_data['client_id']
 default[:biz][:client_secret] = conf_data['client_secret']
+default[:biz][:callback_url] = "http://#{default[:biz][:host]}:#{default[:biz][:port]}/auth/fiware/callback"
+
 default[:biz][:charging][:port] = conf_data['charging']['port']
 default[:biz][:charging][:email][:user] = conf_data['charging']['email_user']
 default[:biz][:charging][:email][:email] = conf_data['charging']['email']

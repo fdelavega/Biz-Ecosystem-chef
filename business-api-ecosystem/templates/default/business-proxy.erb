@@ -1,0 +1,33 @@
+#! /bin/sh
+ 
+start() {
+  WORKSPACE=`pwd`
+  echo "Starting the Business Ecosystem Logic Proxy"
+
+  cd /opt/biz-ecosystem/business-ecosystem-logic-proxy/  
+  nohup node server.js &
+  cd $WORKSPACE
+}
+
+stop() {
+  for var in $(netstat -ntlp | grep <%= node[:biz][:port] %>); do pid=$var; done
+  kill -9 $(echo $pid | cut -f1 -d/)  
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  stop)
+    stop
+    ;;
+  *)
+    echo $"usage: $0 {start|stop|restart}"
+    exit 3
+    ;;
+esac
+:

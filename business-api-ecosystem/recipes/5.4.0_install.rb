@@ -40,6 +40,8 @@ end
 
 include_recipe "business-api-ecosystem::install_charging"
 
+include_recipe "business-api-ecosystem::install_proxy"
+
 template '/opt/biz-ecosystem/biz-conf.json' do
   action :create_if_missing
   source 'biz-conf.json.erb'
@@ -52,10 +54,9 @@ service 'business-charging' do
   action [:enable, :start]
 end
 
-# execute 'sleeep' do
-#  command 'exec 9<>/dev/tcp/127.0.0.1/4848 >> /tmp/hola.txt 2>&1; exec 9>&-; exec 9<&-; exec 9>&'
-# end
+# Run the logic proxy
+service "business-proxy" do
+  supports :restart => true, :start => true, :stop =>true
+  action [:enable, :start]
+end
 
-# execute 'start-charging' do
-#  command 'service business-charging restart >> /tmp/hola.txt 2>&1'
-# end
