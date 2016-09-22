@@ -40,6 +40,12 @@ end
 
 include_recipe "business-api-ecosystem::install_charging"
 
+template '/opt/biz-ecosystem/biz-conf.json' do
+  action :create_if_missing
+  source 'biz-conf.json.erb'
+  mode '0755'
+end
+
 # Run the charging backend
 service 'business-charging' do
   supports :restart => true, :start => true, :stop =>true

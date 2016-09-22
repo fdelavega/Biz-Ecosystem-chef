@@ -1,0 +1,17 @@
+{
+    "host": "<%= node[:biz][:host] %>",
+    "port": <%= node[:biz][:port]%>,
+    "client_id": "<%= node[:biz][:client_id] %>",
+    "client_secret": "<%= node[:biz][:client_secret] %>",
+    "charging": {
+        "port": <%= node[:biz][:charging][:port] %>,
+        "email_user": "<%= node[:biz][:charging][:email][:user] %>",
+        "email": "<%= node[:biz][:charging][:email][:email] %>",
+        "email_passwd": "<%=node[:biz][:charging][:email][:passwd] %>",
+        "email_server": "<%= node[:biz][:charging][:email][:server] %>",
+        "email_port": <%= node[:biz][:charging][:email][:port] %>,
+        "paypal_id": "<%= node[:biz][:charging][:paypal][:id] %>",
+        "paypal_secret": "<%= node[:biz][:charging][:paypal][:secret] %>",
+        "paypal_mode": "<%= node[:biz][:charging][:paypal][:mode] %>"
+    }
+}

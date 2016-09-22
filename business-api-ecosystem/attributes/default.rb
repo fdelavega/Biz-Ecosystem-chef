@@ -1,8 +1,47 @@
 
-# Business Ecosystem
-default[:biz][:host] = 'localhost'
-default[:biz][:port] = 8000
+require 'json'
 
+conf_data = {
+  'host' => 'localhost',
+  'port' => 8000,
+  'client_id' => 'client_id',
+  'client_secret' => 'client_secret',
+  'charging' => {
+    'port' => 8006,
+    'email_user' => 'email_user',
+    'email' => 'biz@email.com',
+    'email_passwd' => 'email_passwd',
+    'email_server' => 'email_server',
+    'email_port' => 587,
+    'paypal_id' => 'paypal_id',
+    'paypal_secret' => 'paypal_secret',
+    'paypal_mode' => 'sandbox'
+  }
+}
+
+# Override attributes with user configuration
+if File.exist? '/opt/biz-ecosystem/biz-conf.json'
+  conf = File.read('/opt/biz-ecosystem/biz-conf.json')
+  conf_data = JSON.parse(conf)
+end
+
+# Business Ecosystem
+default[:biz][:host] = conf_data['host']
+default[:biz][:port] = conf_data['port']
+default[:biz][:client_id] = conf_data['client_id']
+default[:biz][:client_secret] = conf_data['client_secret']
+default[:biz][:charging][:port] = conf_data['charging']['port']
+default[:biz][:charging][:email][:user] = conf_data['charging']['email_user']
+default[:biz][:charging][:email][:email] = conf_data['charging']['email']
+default[:biz][:charging][:email][:passwd] = conf_data['charging']['email_passwd']
+default[:biz][:charging][:email][:server] = conf_data['charging']['email_server']
+default[:biz][:charging][:email][:port] = conf_data['charging']['email_port']
+
+default[:biz][:charging][:paypal][:id] = conf_data['charging']['paypal_id']
+default[:biz][:charging][:paypal][:secret] = conf_data['charging']['paypal_secret']
+default[:biz][:charging][:paypal][:mode] = conf_data['charging']['paypal_mode']
+
+# APIs
 default[:biz][:rss][:database] = 'RSS'
 default[:biz][:rss][:root] = 'DSRevenueSharing'
 
@@ -26,17 +65,6 @@ default[:biz][:billing][:root] = 'DSBillingManagement'
 
 default[:biz][:usage][:database] = 'UsageM'
 default[:biz][:usage][:root] = 'DSUsageManagement'
-
-default[:biz][:charging][:port] = 8006
-default[:biz][:charging][:email][:user] = 'email_user'
-default[:biz][:charging][:email][:email] = 'biz@email.com'
-default[:biz][:charging][:email][:passwd] = 'email_passwd'
-default[:biz][:charging][:email][:server] = 'email_server'
-default[:biz][:charging][:email][:port] = 557
-
-default[:biz][:charging][:paypal][:id] = 'paypal_id'
-default[:biz][:charging][:paypal][:secret] = 'paypal_secret'
-default[:biz][:charging][:paypal][:mode] = 'sandbox'
 
 # Java 8
 default[:java][:install_flavor] = 'oracle'
@@ -68,3 +96,4 @@ for api in tmf_apis do
 
   default[:glassfish][:domains][:domain1][:jdbc_connection_pools][api][:resources]['jdbc/' + api][:description] = 'Catalog JDBC'
 end
+
