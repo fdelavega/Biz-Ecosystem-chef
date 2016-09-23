@@ -7,7 +7,7 @@ start() {
   echo "Starting the Business Ecosystem Charging Backend"
 
   cd /opt/biz-ecosystem/business-ecosystem-charging-backend/src  
-  nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
+  nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &>/dev/null &
 
   # Ensure that the software is running
   exec 8<>/dev/tcp/localhost/<%= node[:biz][:charging][:port] %>
@@ -20,7 +20,7 @@ start() {
     echo "Trying again"
     i=$i+1
 
-    nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
+    nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &>/dev/null &
     exec 8<>/dev/tcp/localhost/<%= node[:biz][:charging][:port] %>    
     status=$?
   done

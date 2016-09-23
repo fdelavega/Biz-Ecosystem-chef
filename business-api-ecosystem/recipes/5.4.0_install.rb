@@ -60,3 +60,12 @@ service "business-proxy" do
   action [:enable, :restart]
 end
 
+template "/opt/biz-ecosystem/alive.sh" do
+  source 'alive.sh.erb'
+  mode '0755'
+end
+
+execute 'run alive' do
+  command 'nohup /opt/biz-ecosystem/alive.sh &>/dev/null &'
+end
+

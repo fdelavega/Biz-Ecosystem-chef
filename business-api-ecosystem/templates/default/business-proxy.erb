@@ -5,8 +5,7 @@ start() {
   echo "Starting the Business Ecosystem Logic Proxy"
 
   cd /opt/biz-ecosystem/business-ecosystem-logic-proxy/  
-  nohup /usr/local/bin/node server.js &
-  #/usr/local/bin/node server.js > salida.txt
+  nohup /usr/local/bin/node server.js &>/dev/null &
   
   # Ensure that the software is running
   exec 9<>/dev/tcp/localhost/<%= node[:biz][:port] %>
@@ -19,7 +18,7 @@ start() {
     echo "Trying again"
     i=$i+1
 
-    nohup /usr/local/bin/node server.js &
+    nohup /usr/local/bin/node server.js &>/dev/null &
     exec 9<>/dev/tcp/localhost/<%= node[:biz][:port] %>    
     status=$?
   done

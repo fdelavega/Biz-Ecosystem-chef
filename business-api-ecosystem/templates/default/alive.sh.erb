@@ -1,18 +1,25 @@
 #! /bin/bash
 
+pidfile=/opt/biz-ecosystem/pidfile
+if [ -f "$pidfile" ] && kill -0 `cat $pidfile` 2>/dev/null; then
+  echo "Already running"
+fi
+
+echo $$ > $pidfile
+
 while true
 do
   sleep 30
   exec 8<>/dev/tcp/localhost/<%= node[:biz][:charging][:port] %>
 
-  if [[ $? -ne 0 ]]; then 
-    nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
+  if [[ $? -ne 0 ]]; then
+    sudo service business-charging start
   fi
 
   exec 9<>/dev/tcp/localhost/<%= node[:biz][:port] %>
 
   if [[ $? -ne 0 ]]; then 
-      nohup /usr/local/bin/node server.js &
+    sudo service business-proxy start
   fi
 
   exec 8>&- # close output connection
