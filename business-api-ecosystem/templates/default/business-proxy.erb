@@ -5,10 +5,11 @@ start() {
   echo "Starting the Business Ecosystem Logic Proxy"
 
   cd /opt/biz-ecosystem/business-ecosystem-logic-proxy/  
-  nohup node server.js &
+  nohup /usr/local/bin/node server.js &
+  #/usr/local/bin/node server.js > salida.txt
   
   # Ensure that the software is running
-  exec 8<>/dev/tcp/localhost/<%= node[:biz][:port] %>
+  exec 9<>/dev/tcp/localhost/<%= node[:biz][:port] %>
   status=$?
 
   while [[ $status -ne 0 && $i -lt 20 ]]; do
@@ -18,13 +19,13 @@ start() {
     echo "Trying again"
     i=$i+1
 
-    nohup node server.js &
-    exec 8<>/dev/tcp/localhost/<%= node[:biz][:port] %>    
+    nohup /usr/local/bin/node server.js &
+    exec 9<>/dev/tcp/localhost/<%= node[:biz][:port] %>    
     status=$?
   done
 
-  exec 8>&- # close output connection
-  exec 8<&- # close input connection
+  exec 9>&- # close output connection
+  exec 9<&- # close input connection
   cd $WORKSPACE
 }
 
