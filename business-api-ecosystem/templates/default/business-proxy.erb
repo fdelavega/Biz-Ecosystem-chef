@@ -6,6 +6,25 @@ start() {
 
   cd /opt/biz-ecosystem/business-ecosystem-logic-proxy/  
   nohup node server.js &
+  
+  # Ensure that the software is running
+  exec 8<>/dev/tcp/localhost/<%= node[:biz][:port] %>
+  status=$?
+
+  while [[ $status -ne 0 && $i -lt 20 ]]; do
+    echo "The logic proxy did not start..."
+    sleep 1
+
+    echo "Trying again"
+    i=$i+1
+
+    nohup node server.js &
+    exec 8<>/dev/tcp/localhost/<%= node[:biz][:port] %>    
+    status=$?
+  done
+
+  exec 8>&- # close output connection
+  exec 8<&- # close input connection
   cd $WORKSPACE
 }
 

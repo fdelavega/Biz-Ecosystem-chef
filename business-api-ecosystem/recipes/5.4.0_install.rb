@@ -57,6 +57,6 @@ end
 # Run the logic proxy
 service "business-proxy" do
   supports :restart => true, :start => true, :stop =>true
-  action [:enable, :start]
+  action [:enable, :restart]
 end
 
