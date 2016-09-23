@@ -16,7 +16,8 @@ conf_data = {
     'paypal_id' => 'paypal_id',
     'paypal_secret' => 'paypal_secret',
     'paypal_mode' => 'sandbox'
-  }
+  },
+  'revenue_model': 30
 }
 
 # Override attributes with user configuration
@@ -43,6 +44,8 @@ default[:biz][:charging][:email][:port] = conf_data['charging']['email_port']
 default[:biz][:charging][:paypal][:id] = conf_data['charging']['paypal_id']
 default[:biz][:charging][:paypal][:secret] = conf_data['charging']['paypal_secret']
 default[:biz][:charging][:paypal][:mode] = conf_data['charging']['paypal_mode']
+
+default[:biz][:rss][:revenue] = conf_data['revenue_model']
 
 # APIs
 default[:biz][:rss][:database] = 'RSS'

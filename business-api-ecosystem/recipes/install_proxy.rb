@@ -37,7 +37,8 @@ template "/opt/biz-ecosystem/business-ecosystem-logic-proxy/config.js" do
   source "config.js.erb"
 end
 
-template "/etc/init/business-proxy" do
+template "/etc/init.d/business-proxy" do
   source "business-proxy.erb"
+  mode "0755"
 end
 
