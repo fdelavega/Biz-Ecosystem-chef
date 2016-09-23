@@ -72,6 +72,11 @@ default[:biz][:billing][:root] = 'DSBillingManagement'
 default[:biz][:usage][:database] = 'UsageM'
 default[:biz][:usage][:root] = 'DSUsageManagement'
 
+# NodeJS 4.5.0
+default[:nodejs][:install_method] = 'binary'
+default[:nodejs][:version] = '4.5.0'
+default[:nodejs][:binary][:checksum] = 'c6ee1f4303353e3605ff70de180431417eb594fe08daf612e692216236750c55' 
+
 # Java 8
 default[:java][:install_flavor] = 'oracle'
 default[:java][:jdk_version] = '8'
