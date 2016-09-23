@@ -25,7 +25,7 @@ git "/opt/biz-ecosystem/business-ecosystem-logic-proxy" do
 end
 
 include_recipe "nodejs::nodejs_from_binary" 
-include_recipe "nodejs"
+include_recipe "nodejs::npm"
 
 # npm install
 nodejs_npm "biz-ecosys-logic-proxy" do
