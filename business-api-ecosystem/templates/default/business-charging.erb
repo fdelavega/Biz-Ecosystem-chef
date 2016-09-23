@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
  
 #to prevent some possible problems
 
@@ -8,7 +8,26 @@ start() {
 
   cd /opt/biz-ecosystem/business-ecosystem-charging-backend/src  
   nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
-  #/opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %>
+
+  # Ensure that the software is running
+  exec 8<>/dev/tcp/localhost/<%= node[:biz][:charging][:port] %>
+  status=$?
+
+  while [[ $status -ne 0 && $i -lt 20 ]]; do
+    echo "The charging backend did not start..."
+    sleep 1
+
+    echo "Trying again"
+    i=$i+1
+
+    nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &
+    exec 8<>/dev/tcp/localhost/<%= node[:biz][:charging][:port] %>    
+    status=$?
+  done
+
+  exec 8>&- # close output connection
+  exec 8<&- # close input connection
+
   cd $WORKSPACE
 }
 
