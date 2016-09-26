@@ -65,6 +65,11 @@ template "/opt/biz-ecosystem/alive.sh" do
   mode '0755'
 end
 
+template "/etc/motd" do
+  source 'motd.erb'
+  mode '0644'
+end
+
 execute 'run alive' do
   command 'nohup /opt/biz-ecosystem/alive.sh &>/dev/null &'
 end

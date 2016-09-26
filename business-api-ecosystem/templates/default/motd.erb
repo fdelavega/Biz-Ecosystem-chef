@@ -1,0 +1,38 @@
+Welcome to the Business API Ecosystem!
+
+The current VM has been generated using the existing chef cookbook.
+If this is the first time you access to the VM there are some topics
+to be considered:
+
+1) The current installation comes with a default configuration, which
+needs to be modified in order to use the system:
+
+   - You have to register the application in the FIWARE IdM (https://account.lab.fiware.org/)
+      - URL: http://your_cloud_ip:<%= node[:biz][:port]%>
+      - Callback URL: http://your_cloud_ip:<%= node[:biz][:port]%>/auth/fiware/callback
+
+   - Update the config.js file of the Logic proxy component with the 
+     OAuth2 params (Client id,client secret, and callback url). 
+     This file is located in /opt/biz-ecosystem/business-ecosystem-logic-proxy
+
+   - Optionally, you can include email configuration, if you want 
+     your instance to send notifications by email. To do that fill
+     the email settings located in the settings.py file of the 
+     Business Charging Backend
+     This file is located in /opt/biz-ecosystem/business-charging-backend/src
+
+2) The chef client runs periodically, that means that just 
+including the configuration info in the components file is not 
+enough, since they can be overriden. To deal with this issue 
+include your configuration settings in the biz-conf.json file
+located in /opt/biz-ecosystem. This way, the chef client will 
+use the information included in this file when generating the 
+configuration templates.
+
+3) The different components of the Business API Ecosystem are included
+as services. You can run them as follows:
+
+   - sudo service glasfish-domain1 restart
+   - sudo service business-charging restart
+   - sudo service business-proxy restart
+

@@ -9,6 +9,7 @@ start() {
   cd /opt/biz-ecosystem/business-ecosystem-charging-backend/src  
   nohup /opt/biz-ecosystem/virtenv/bin/python ./manage.py runserver 127.0.0.1:<%= node[:biz][:charging][:port] %> &>/dev/null &
 
+  sleep 5
   # Ensure that the software is running
   exec 8<>/dev/tcp/localhost/<%= node[:biz][:charging][:port] %>
   status=$?
