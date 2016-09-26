@@ -32,8 +32,8 @@ end
 # Install system dependencies
 pkgs = value_for_platform_family(
    "debian" => ["xvfb", "libssl-dev", "libffi-dev", "python-dev"],
-   "rhel" => ["xorg-x11-server-Xvfb", "libffi-devel",  "python-devel",  "openssl-devel", "gcc"],
-   "fedora" => ["xorg-x11-server-Xvfb", "libffi-devel",  "python-devel",  "openssl-devel", "gcc"],
+   "rhel" => ["xorg-x11-server-Xvfb", "libffi-devel",  "python-devel",  "openssl-devel", "gcc", "fontconfig", "libpng", "libXrender"],
+   "fedora" => ["xorg-x11-server-Xvfb", "libffi-devel",  "python-devel",  "openssl-devel", "gcc", "fontconfig", "libpng", "libXrender"],
    "default" => ["xvfb", "libssl-dev", "libffi-dev", "python-dev"]
 )
 
