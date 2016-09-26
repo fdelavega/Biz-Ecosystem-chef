@@ -87,7 +87,7 @@ end
 include_recipe 'apt'
 
 mysql_service 'default' do
-  package_version '5.6.33-0ubuntu0.14.04.1'
+  #package_version '5.6.33-0ubuntu0.14.04.1'
   notifies :run, 'execute[apt-get update]', :immediately
   port '3306'
   version '5.6'

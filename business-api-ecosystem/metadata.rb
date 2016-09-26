@@ -12,6 +12,8 @@ depends          "poise-python"
 depends          "java"
 depends          "mongodb"
 depends          "nodejs"
+depends          "yum-epel"
+depends          "yum-mysql-community"
 
 %w{ debian ubuntu centos redhat fedora }.each do |os|
     supports os

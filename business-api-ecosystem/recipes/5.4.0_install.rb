@@ -19,6 +19,13 @@
 
 require 'rubygems'
 
+if node[:platform_family] == "rhel" then
+  include_recipe "yum-epel"
+  yum_repository "epel"
+  
+  include_recipe "yum-mysql-community::mysql56"
+end
+
 # Include java
 include_recipe "java"
 
