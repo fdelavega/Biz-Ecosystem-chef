@@ -86,13 +86,22 @@ end
 
 include_recipe 'apt'
 
-mysql_service 'default' do
-  #package_version '5.6.33-0ubuntu0.14.04.1'
-  notifies :run, 'execute[apt-get update]', :immediately
-  port '3306'
-  version '5.6'
-  initial_root_password 'root'
-  action [:create, :start]
+if node[:platform_family] == "rhel" then
+  mysql_service 'default' do
+    port '3306'
+    version '5.6'
+    initial_root_password 'root'
+    action [:create, :start]
+  end
+else
+  mysql_service 'default' do
+    package_version '5.6.33-0ubuntu0.14.04.1'
+    notifies :run, 'execute[apt-get update]', :immediately
+    port '3306'
+    version '5.6'
+    initial_root_password 'root'
+    action [:create, :start]
+  end
 end
 
 for war in wars do
