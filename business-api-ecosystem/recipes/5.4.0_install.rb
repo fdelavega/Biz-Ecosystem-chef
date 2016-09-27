@@ -41,7 +41,22 @@ end
 
 include_recipe "mongodb::default"
 
-mongodb_instance "mongodb" do
+mongo_inst = 'mongodb'
+if node[:platform_family] == "rhel" then
+  # There is a bug with the mongo recipe in centos, it starts mongodb without using service.
+  # The mongod service uses a pidfile. Since the file is not created but the service is running
+  # both start and restart fail because the running instance is using the expected port (27017)
+  #execute 'mongo service workarround' do
+  #  command 'for var in $(netstat -ntlp | grep 27017); do pid=$var; done; kill -9 $(echo $pid | cut -f1 -d/)'
+  #end
+
+  #service 'mongod' do
+  #  action :start
+  #end
+  mongo_inst = 'mongod'
+end
+
+mongodb_instance mongo_inst do
   smallfiles true
 end
 
