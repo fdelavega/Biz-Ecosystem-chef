@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: business-api-ecosystem
+# Cookbook Name:: business_api_ecosystem
 # Recipe:: install_charging
 #
 # Copyright 2016, CoNWeT Lab., Universidad PolitÃ©cnica de Madrid

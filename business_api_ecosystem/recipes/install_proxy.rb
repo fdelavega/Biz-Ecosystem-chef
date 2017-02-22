@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: business-api-ecosystem
+# Cookbook Name:: business_api_ecosystem
 # Recipe:: 5.4.0_install
 #
 # Copyright 2016, CoNWeT Lab., Universidad PolitÃ©cnica de Madrid

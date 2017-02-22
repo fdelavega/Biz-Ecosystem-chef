@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: business-api-ecosystem
+# Cookbook Name:: business_api_ecosystem
 # Recipe:: 5.4.0_install
 #
 # Copyright 2016, CoNWeT Lab., Universidad PolitÃ©cnica de Madrid
@@ -33,7 +33,7 @@ package 'git' do
   action :install
 end
 
-include_recipe "business-api-ecosystem::install_apis"
+include_recipe "business_api_ecosystem::install_apis"
 
 directory "/opt/biz-ecosystem" do
   recursive true
@@ -50,9 +50,9 @@ mongodb_instance mongo_inst do
   smallfiles true
 end
 
-include_recipe "business-api-ecosystem::install_charging"
+include_recipe "business_api_ecosystem::install_charging"
 
-include_recipe "business-api-ecosystem::install_proxy"
+include_recipe "business_api_ecosystem::install_proxy"
 
 template '/opt/biz-ecosystem/biz-conf.json' do
   action :create_if_missing

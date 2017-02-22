@@ -1,4 +1,4 @@
-name             "business-api-ecosystem"
+name             "business_api_ecosystem"
 maintainer       "CoNWeT"
 maintainer_email "wstore@conwet.com"
 license          "Apache 2.0"
