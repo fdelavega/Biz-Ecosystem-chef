@@ -168,4 +168,15 @@ execute 'create sites' do
   command 'mongo /opt/biz-ecosystem/createsites.js'
 end
 
+directory '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/media' do
+  mode '0755'
+end
+
+directory '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/media/assets' do
+  mode '0755'
+end
+
+directory '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/media/bills' do
+  mode '0755'
+end
 

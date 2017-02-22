@@ -19,5 +19,5 @@
 
 require 'rubygems'
 
-node[:biz][:version] = 'v5.4.0'
+node.default[:biz][:version] = 'v5.4.0'
 include_recipe "business_api_ecosystem::install"

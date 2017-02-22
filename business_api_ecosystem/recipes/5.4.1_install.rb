@@ -19,12 +19,12 @@
 
 require 'rubygems'
 
-node[:biz][:version] = 'v5.4.1'
+node.default[:biz][:version] = 'v5.4.1'
 
-node[:nodejs][:version] = '6.10.0'
-node[:nodejs][:binary][:checksum] = '0f28bef128ef8ce2d9b39b9e46d2ebaeaa8a301f57726f2eba46da194471f224' 
+node.default[:nodejs][:version] = '6.10.0'
+node.default[:nodejs][:binary][:checksum] = '0f28bef128ef8ce2d9b39b9e46d2ebaeaa8a301f57726f2eba46da194471f224' 
 
-default[:biz][:proxy][:conf] = '5.4.1.config.js.erb'
+node.default[:biz][:proxy][:conf] = '5.4.1.config.js.erb'
 
 include_recipe "business_api_ecosystem::install"
 
