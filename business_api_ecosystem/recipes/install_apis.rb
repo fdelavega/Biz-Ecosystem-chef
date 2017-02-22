@@ -20,49 +20,49 @@
 require 'rubygems'
 
 rss_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/business-ecosystem-rss/releases/download/v5.4.0/DSRevenueSharing.war',
+  :url => "https://github.com/FIWARE-TMForum/business-ecosystem-rss/releases/download/#{node[:biz][:version]}/DSRevenueSharing.war",
   :database => node[:biz][:rss][:database],
   :root => node[:biz][:rss][:root]
 ]
 
 catalog_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTCATALOG2/releases/download/v5.4.0/DSProductCatalog.war',
+  :url => "https://github.com/FIWARE-TMForum/DSPRODUCTCATALOG2/releases/download/#{node[:biz][:version]}/DSProductCatalog.war",
   :database => node[:biz][:catalog][:database],
   :root => node[:biz][:catalog][:root]
 ]
 
 ordering_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTORDERING/releases/download/v5.4.0/DSProductOrdering.war',
+  :url => "https://github.com/FIWARE-TMForum/DSPRODUCTORDERING/releases/download/#{node[:biz][:version]}/DSProductOrdering.war",
   :database => node[:biz][:ordering][:database],
   :root => node[:biz][:ordering][:root]
 ]
 
 inventory_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPRODUCTINVENTORY/releases/download/v5.4.0/DSProductInventory.war',
+  :url => "https://github.com/FIWARE-TMForum/DSPRODUCTINVENTORY/releases/download/#{node[:biz][:version]}/DSProductInventory.war",
   :database => node[:biz][:inventory][:database],
   :root => node[:biz][:inventory][:root]
 ]
 
 party_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSPARTYMANAGEMENT/releases/download/v5.4.0/DSPartyManagement.war',
+  :url => "https://github.com/FIWARE-TMForum/DSPARTYMANAGEMENT/releases/download/#{node[:biz][:version]}/DSPartyManagement.war",
   :database => node[:biz][:party][:database],
   :root => node[:biz][:party][:root]
 ]
 
 customer_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSCUSTOMER/releases/download/v5.4.0/DSCustomerManagement.war',
+  :url => "https://github.com/FIWARE-TMForum/DSCUSTOMER/releases/download/#{node[:biz][:version]}/DSCustomerManagement.war",
   :database => node[:biz][:customer][:database],
   :root => node[:biz][:customer][:root]
 ]
 
 billing_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSBILLINGMANAGEMENT/releases/download/v5.4.0/DSBillingManagement.war',
+  :url => "https://github.com/FIWARE-TMForum/DSBILLINGMANAGEMENT/releases/download/#{node[:biz][:version]}/DSBillingManagement.war",
   :database => node[:biz][:billing][:database],
   :root => node[:biz][:billing][:root]
 ]
 
 usage_data = Hash[
-  :url => 'https://github.com/FIWARE-TMForum/DSUSAGEMANAGEMENT/releases/download/v5.4.0/DSUsageManagement.war',
+  :url => "https://github.com/FIWARE-TMForum/DSUSAGEMANAGEMENT/releases/download/#{node[:biz][:version]}/DSUsageManagement.war",
   :database => node[:biz][:usage][:database],
   :root => node[:biz][:usage][:root]
 ]

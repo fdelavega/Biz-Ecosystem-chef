@@ -1,3 +1,3 @@
 {
-  "run_list": ["recipe[business_api_ecosystem::5.4.0_install]"]
+  "run_list": ["recipe[business_api_ecosystem::5.4.1_install]"]
 }

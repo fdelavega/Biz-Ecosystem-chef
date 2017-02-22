@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: business_api_ecosystem
-# Recipe:: 5.4.0_install
+# Recipe:: install_proxy
 #
 # Copyright 2016, CoNWeT Lab., Universidad PolitÃ©cnica de Madrid
 #
@@ -20,7 +20,7 @@
 # git clone
 git "/opt/biz-ecosystem/business-ecosystem-logic-proxy" do
   repository "https://github.com/FIWARE-TMForum/business-ecosystem-logic-proxy.git"
-  revision "v5.4.0"
+  revision node[:biz][:version]
   action :sync
 end
 
@@ -34,7 +34,7 @@ nodejs_npm "biz-ecosys-logic-proxy" do
 end
 
 template "/opt/biz-ecosystem/business-ecosystem-logic-proxy/config.js" do
-  source "config.js.erb"
+  source node[:biz][:proxy][:conf]
 end
 
 template "/etc/init.d/business-proxy" do

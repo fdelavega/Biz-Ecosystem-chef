@@ -25,7 +25,7 @@ include_recipe "poise-python"
 # Clone business ecosystem charging repo
 git "/opt/biz-ecosystem/business-ecosystem-charging-backend" do
   repository "https://github.com/FIWARE-TMForum/business-ecosystem-charging-backend.git"
-  reference "v5.4.0"
+  reference node[:biz][:version]
   action :sync
 end
 
@@ -139,7 +139,7 @@ end
 
 # Deploy templates
 template '/opt/biz-ecosystem/business-ecosystem-charging-backend/src/settings.py' do
-  source 'settings.py.erb'
+  source "settings.py.erb"
   mode '0755'
 end
 

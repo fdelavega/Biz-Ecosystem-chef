@@ -19,5 +19,26 @@
 
 require 'rubygems'
 
-node[:biz][:version] = 'v5.4.0'
+node[:biz][:version] = 'v5.4.1'
+
+node[:nodejs][:version] = '6.10.0'
+node[:nodejs][:binary][:checksum] = '0f28bef128ef8ce2d9b39b9e46d2ebaeaa8a301f57726f2eba46da194471f224' 
+
+default[:biz][:proxy][:conf] = '5.4.1.config.js.erb'
+
 include_recipe "business_api_ecosystem::install"
+
+# Create search indexes
+
+directory '/opt/biz-ecosystem/business-ecosystem-logic-proxy/indexes' do
+  recursive true
+end
+
+execute 'create_indexes' do
+  command 'cd /opt/biz-ecosystem/business-ecosystem-logic-proxy/ && node fill_indexes.js'
+end
+
+service "business-proxy" do
+  action :restart
+end
+
